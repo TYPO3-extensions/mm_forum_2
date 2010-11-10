@@ -1,0 +1,28 @@
+{namespace mmf=Tx_MmForum_ViewHelpers}
+
+<mmf:control.bigButton controller="Forum"
+					   action="show"
+					   iconAction="back"
+					   arguments="{forum: topic.forum}"><f:translate key="Button_Back" /></mmf:control.bigButton>
+
+<mmf:authentication.ifAccess object="{topic}" accessType="newPost">
+	<mmf:control.bigButton controller="Post" action="new" arguments="{topic: topic}"><f:translate key="Button_Reply" /></mmf:control.bigButton>
+</mmf:authentication.ifAccess>
+
+<mmf:authentication.ifLoggedIn>
+	<mmf:user.ifSubscribed object="{topic}">
+		<f:then>
+			<mmf:control.bigButton controller="User"
+								   action="subscribe"
+								   iconAction="unsubscribe"
+								   arguments="{topic: topic, unsubscribe: 1}">
+				<f:translate key="Button_Unsubscribe" />
+			</mmf:control.bigButton>
+		</f:then>
+		<f:else><mmf:control.bigButton controller="User" action="subscribe" arguments="{topic: topic}"><f:translate key="Button_Subscribe" /></mmf:control.bigButton></f:else>
+	</mmf:user.ifSubscribed>
+</mmf:authentication.ifLoggedIn>
+
+<mmf:authentication.ifAccess object="{topic}" accessType="moderate">
+	<mmf:control.bigButton controller="Moderation" action="editTopic" arguments="{topic: topic}"><f:translate key="Button_Moderate" /></mmf:control.bigButton>
+</mmf:authentication.ifAccess>
